@@ -1,0 +1,93 @@
+# CI Workflow for Data Structures and Algorithms
+
+name: CI
+
+on:
+  # Trigger the workflow on push or pull request events for all branches
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+  # Allows manual execution of the workflow
+  workflow_dispatch:
+
+jobs:
+  build:
+    # Define the environment for the job
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Set up programming environment (adjust for Python, Java, C++, etc.)
+      - name: Set up Python
+        if: env.LANGUAGE == 'Python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Set up Java
+        if: env.LANGUAGE == 'Java'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Set up C++
+        if: env.LANGUAGE == 'C++'
+        run: sudo apt-get install g++
+
+      # Install dependencies (language-specific)
+      - name: Install Dependencies
+        if: env.LANGUAGE == 'Python'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi
+
+      - name: Compile Java Files
+        if: env.LANGUAGE == 'Java'
+        run: |
+          find . -name "*.java" > sources.txt
+          javac @sources.txt
+
+      - name: Compile C++ Files
+        if: env.LANGUAGE == 'C++'
+        run: |
+          for file in $(find . -name "*.cpp"); do
+            g++ $file -o ${file%.cpp}.out;
+          done
+
+      # Run tests for Python
+      - name: Run Python Tests
+        if: env.LANGUAGE == 'Python'
+        run: |
+          echo "Running Python tests..."
+          pytest --maxfail=5 --disable-warnings
+
+      # Run tests for Java
+      - name: Run Java Tests
+        if: env.LANGUAGE == 'Java'
+        run: |
+          echo "Running Java tests..."
+          for file in $(find . -name "*Test.java"); do
+            javac $file;
+            java ${file%.java};
+          done
+
+      # Run tests for C++
+      - name: Run C++ Tests
+        if: env.LANGUAGE == 'C++'
+        run: |
+          echo "Running C++ tests..."
+          for file in $(find . -name "*.out"); do
+            ./$file;
+          done
+
+      # Post-execution script
+      - name: Complete Workflow
+        run: echo "CI workflow completed for Data Structures and Algorithms."
