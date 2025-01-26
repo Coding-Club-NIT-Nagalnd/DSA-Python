@@ -91,4 +91,4 @@ We strive to maintain a positive and inclusive environment. Please:
 
 Happy coding! 🚀
 
-For any questions or issues, feel free to raise an issue in this repository or reach out to the maintainers.
+For any questions or issues, feel free to raise an issue in this repository or reach out to the maintainers and your seniors.
