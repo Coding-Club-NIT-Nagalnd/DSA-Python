@@ -1,11 +1,25 @@
+class Node:
+    """
+    A Node class for the linked list implementation of a Queue.
+    """
+    
+    def __init__(self, data: int) -> None:
+        """
+        Initializes a node with data and a pointer to the next node.
+        
+        Parameters:
+        data (int): The data to be stored in the node.
+        """
+        pass
+
 class Queue:
     """
-    A Queue implementation using a list with standard queue operations.
+    A Queue implementation using a linked list with standard queue operations.
     """
     
     def __init__(self) -> None:
         """
-        Initializes an empty queue.
+        Initializes an empty queue with front and rear pointers.
         """
         pass
     
